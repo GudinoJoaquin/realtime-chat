@@ -6,7 +6,7 @@ import {
   type FormEvent,
 } from "react";
 import { io, type Socket } from "socket.io-client";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 type ChatMessage = {
   roomId: string;
@@ -21,6 +21,14 @@ export default function App() {
   const socketRef = useRef<Socket | null>(null);
   const previousRoom = useRef<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!roomId) {
+      navigate("/", { replace: true });
+    }
+  }, [roomId, navigate]);
 
   useEffect(() => {
     setUsername(localStorage.getItem("username") as string);
