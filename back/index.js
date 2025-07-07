@@ -2,15 +2,23 @@ import express from "express";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 import { PORT } from "./config.js";
+import cors from "cors";
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "https://realtime-chat-pied.vercel.app",
     methods: ["GET", "POST"],
   },
 });
+
+app.use(
+  cors({
+    origin: "https://realtime-chat-pied.vercel.app",
+    methods: ["GET", "POST"],
+  })
+);
 
 // Mensajes guardados por sala
 const messagesByRoom = {}; // Ej: { sala1: [{ roomId, message }] }

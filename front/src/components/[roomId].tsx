@@ -28,7 +28,7 @@ export default function App() {
 
   // Crear socket solo una vez
   useEffect(() => {
-    socketRef.current = io("https://realtime-chat-5kvw.onrender.com/");
+    socketRef.current = io("https://realtime-chat-5kvw.onrender.com");
 
     socketRef.current.on("message", (msg: ChatMessage) => {
       // Solo agregamos mensajes que sean de la sala actual para evitar mensajes de otras salas (por si acaso)
