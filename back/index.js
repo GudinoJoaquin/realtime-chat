@@ -20,8 +20,7 @@ app.use(
   })
 );
 
-// Mensajes guardados por sala
-const messagesByRoom = {}; // Ej: { sala1: [{ roomId, message }] }
+const messagesByRoom = {};
 
 io.on("connection", (socket) => {
   console.log("Usuario conectado");
@@ -30,11 +29,10 @@ io.on("connection", (socket) => {
     socket.join(roomId);
     console.log(`Usuario se unió a la sala ${roomId}`);
 
-    // Enviar historial al que se conecta
     if (messagesByRoom[roomId]) {
       socket.emit("roomHistory", messagesByRoom[roomId]);
     } else {
-      messagesByRoom[roomId] = []; // Inicializar si no existe
+      messagesByRoom[roomId] = [];
     }
   });
 
@@ -50,11 +48,9 @@ io.on("connection", (socket) => {
       messagesByRoom[roomId] = [];
     }
 
-    // Guardar también el username
     const fullMessage = { roomId, message: msg, username };
     messagesByRoom[roomId].push(fullMessage);
 
-    // Emitir con username también
     io.to(roomId).emit("message", fullMessage);
   });
 

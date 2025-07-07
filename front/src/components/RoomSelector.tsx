@@ -7,7 +7,7 @@ export default function RoomSelector() {
     e.preventDefault();
     if (!inputRef.current) return;
     const value = inputRef.current?.value;
-    localStorage.setItem("username", value ?? "anonimo");
+    localStorage.setItem("username", value || "anonimo");
     alert("Nombre de usuario guardado");
     inputRef.current.value = "";
   }, []);

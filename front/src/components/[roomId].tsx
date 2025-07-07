@@ -26,12 +26,10 @@ export default function App() {
     setUsername(localStorage.getItem("username") as string);
   }, []);
 
-  // Crear socket solo una vez
   useEffect(() => {
     socketRef.current = io("https://realtime-chat-5kvw.onrender.com");
 
     socketRef.current.on("message", (msg: ChatMessage) => {
-      // Solo agregamos mensajes que sean de la sala actual para evitar mensajes de otras salas (por si acaso)
       if (msg.roomId === roomId) {
         setMessages((prev) => [...prev, msg]);
       }
@@ -42,7 +40,6 @@ export default function App() {
     };
   }, [roomId]);
 
-  // Cuando cambia la sala, salimos de la anterior y entramos en la nueva
   useEffect(() => {
     if (!socketRef.current) return;
 
@@ -53,11 +50,10 @@ export default function App() {
     socketRef.current.emit("joinRoom", roomId);
     previousRoom.current = roomId as string;
 
-    setMessages([]); // Limpiar para no mezclar
+    setMessages([]);
 
-    // Escuchar historial
     socketRef.current.once("roomHistory", (mensajes) => {
-      setMessages(mensajes); // Cargar historial
+      setMessages(mensajes);
     });
   }, [roomId]);
 
